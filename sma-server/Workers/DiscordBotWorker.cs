@@ -56,8 +56,8 @@ namespace SMAServer.Workers
         {
             await discord.ConnectAsync();
 
-            var server = await discord.GetGuildAsync(972860193727729714);
-            var channel = server.GetChannel(978216409727385670);
+            var server = await discord.GetGuildAsync(916366594693816330);
+            var channel = server.GetChannel(978227131316334612);
 
             while (!stoppingToken.IsCancellationRequested)
             {
