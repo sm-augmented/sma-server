@@ -19,8 +19,37 @@ namespace SMAServer.Workers
             {
                 Token = secrets.Value.DiscordToken,
                 TokenType = TokenType.Bot,
-                Intents = DiscordIntents.AllUnprivileged
+                Intents = DiscordIntents.AllUnprivileged | DiscordIntents.GuildPresences
             });
+
+            //discord.PresenceUpdated += Discord_PresenceUpdated;
+        }
+
+        private async Task Discord_PresenceUpdated(DiscordClient sender, DSharpPlus.EventArgs.PresenceUpdateEventArgs e)
+        {
+            var server = await discord.GetGuildAsync(916366594693816330);
+            var playingRole = server.Roles.ContainsKey(978257556428447814) ? server.Roles[978257556428447814] : null;
+            var user = e.User ?? e.UserAfter;
+
+            if (user != null && playingRole != null)
+            {
+                var member = await server.GetMemberAsync(user.Id);
+
+                if (e.PresenceAfter?.Activities?.Any(x => x.Name == "Space Marine Augmented") ?? false)
+                {
+                    if (!member.Roles.Any(x => x.Id == playingRole.Id))
+                    {
+                        await member.GrantRoleAsync(playingRole, "From Bot");
+                    }
+                }
+                else
+                {
+                    if (member.Roles.Any(x => x.Id == playingRole.Id))
+                    {
+                        await member.RevokeRoleAsync(playingRole, "From Bot");
+                    }
+                }
+            }
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
