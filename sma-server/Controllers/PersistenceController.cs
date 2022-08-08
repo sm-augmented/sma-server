@@ -23,8 +23,13 @@ namespace SMAServer.Controllers
         }
 
         [HttpPost("registerUserIngame")]
-        public void RegisterUserIngame([FromQuery]string branch, [FromQuery]string uid, [FromQuery]string steamid)
+        public void RegisterUserIngame([FromQuery]string branch, [FromQuery]string uid, [FromQuery]string? steamid = null)
         {
+            if (steamid == null)
+            {
+                steamid = uid;
+            }
+
             var hasPlayer = persistence.Players.TryGetValue(steamid, out UserPing ping);
 
             if (hasPlayer && ping != null)
