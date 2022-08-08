@@ -23,9 +23,9 @@ namespace SMAServer.Controllers
         }
 
         [HttpPost("registerUserIngame")]
-        public void RegisterUserIngame([FromQuery]string branch, [FromQuery]string uid)
+        public void RegisterUserIngame([FromQuery]string branch, [FromQuery]string uid, [FromQuery]string steamid)
         {
-            var hasPlayer = persistence.Players.TryGetValue(uid, out UserPing ping);
+            var hasPlayer = persistence.Players.TryGetValue(steamid, out UserPing ping);
 
             if (hasPlayer && ping != null)
             {
@@ -35,14 +35,15 @@ namespace SMAServer.Controllers
             }
             else
             {
-                persistence.Players.TryAdd(uid, new UserPing()
+                persistence.Players.TryAdd(steamid, new UserPing()
                 {
                     Branch = branch,
                     Created = DateTime.Now,
                     ID = uid,
                     Pinged = DateTime.Now,
                     PingsCount = 0,
-                    Status = ""
+                    Status = "",
+                    SteamID = steamid
                 });
             }
         }

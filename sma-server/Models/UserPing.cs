@@ -13,5 +13,7 @@
         public DateTime Created { get; set; }
 
         public int PingsCount { get; set; }
+
+        public string SteamID { get; set; }
     }
 }

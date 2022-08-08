@@ -56,8 +56,8 @@ namespace SMAServer.Workers
         {
             await discord.ConnectAsync();
 
-            var server = await discord.GetGuildAsync(916366594693816330);
-            var channel = server.GetChannel(978227131316334612);
+            var server = await discord.GetGuildAsync(916366594693816330); //SR - 972860193727729714; SMA - 916366594693816330
+            var channel = server.GetChannel(978227131316334612); //SR - 978216409727385670; SMA - 978227131316334612
 
             while (!stoppingToken.IsCancellationRequested)
             {
@@ -73,7 +73,7 @@ namespace SMAServer.Workers
                 {
                     foreach (var group in groups)
                     {
-                        var grPlayers = string.Join(", ", group.Select(x => x.Key));
+                        var grPlayers = string.Join(", ", group.Select(x => x.Value.ID));
                         msgContent += $"{group.Key}: {group.Count()} ({grPlayers})\n";
                     }
                 }
